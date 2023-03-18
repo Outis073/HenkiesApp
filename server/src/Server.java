@@ -1,5 +1,9 @@
 
 
+import Logica.FileMethods;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Server {
@@ -21,6 +25,11 @@ class Handler extends Thread {
     private KConsole console;
     private KSocket socket;
 
+    private static DataOutputStream dataOutputStream = null;
+    private static DataInputStream dataInputStream = null;
+
+    FileMethods logica = new FileMethods();
+
     Handler(KConsole console, KSocket socket) {
         this.console = console;
         this.socket = socket;
@@ -36,6 +45,30 @@ class Handler extends Thread {
             console.writeLine("Client: " + inputLine);
             outputLine = protocol.processInput(inputLine);
             socket.writeLine(outputLine);
+
+            if (outputLine.equals("create file")) {
+
+                try {
+                    dataInputStream = new DataInputStream(
+                            socket.getInputStream());
+                    dataOutputStream = new DataOutputStream(
+                            socket.getOutputStream());
+
+                    // Here we call receiveFile define new for that
+                    // file
+                    logica.receiveFile("NewFile1.pdf");
+
+                    dataInputStream.close();
+                    dataInputStream.close();
+                    socket.close();
+
+                }
+                catch(Exception e) {
+                    //  Block of code to handle errors
+                }
+
+            }
+
             if (outputLine.equals("Bye.")) {
                 break;
             }

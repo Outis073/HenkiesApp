@@ -1,10 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
-public class KSocket {
+public class KSocket extends Socket {
     private String host;
     private Socket socket;
     private BufferedReader in;

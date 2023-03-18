@@ -1,4 +1,9 @@
+import Logica.FileMethods;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
+import java.util.Scanner;
 
 public class Client {
 
@@ -16,6 +21,11 @@ public class Client {
         String fromServer;
         String fromUser;
 
+        FileMethods logica = new FileMethods();
+
+        DataOutputStream dataOutputStream = null;
+        DataInputStream dataInputStream = null;
+
         while ((fromServer = socket.readLine()) != null) {
 
             console.writeLine("Server: " + fromServer);
@@ -28,6 +38,34 @@ public class Client {
                 //console.writeLine("Client: " + fromUser);
                 socket.writeLine(fromUser);
             }
+
+            if(fromServer.equalsIgnoreCase("create"))
+            {
+                var path =  console.readLine();
+
+                try {
+
+                    dataInputStream = new DataInputStream(
+                            socket.getInputStream());
+                    dataOutputStream = new DataOutputStream(
+                            socket.getOutputStream());
+                    System.out.println(
+                            "Sending the File to the Server");
+
+                    logica.create(path);
+
+                    dataInputStream.close();
+                    dataInputStream.close();
+
+                }
+                catch(Exception e) {
+                    //  Block of code to handle errors
+                }
+
+
+            }
+
+
         }
     }
 }
