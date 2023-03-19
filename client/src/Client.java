@@ -34,16 +34,13 @@ public class Client {
                 break;
 
                 fromUser = console.readLine();
-            if (fromUser != null) {
-                //console.writeLine("Client: " + fromUser);
-                socket.writeLine(fromUser);
-            }
 
-            if(fromServer.equalsIgnoreCase("create"))
+
+            if(fromServer.equalsIgnoreCase("geef een filepath op"))
             {
-                var path =  console.readLine();
 
                 try {
+                    fromUser = console.readLine();
 
                     dataInputStream = new DataInputStream(
                             socket.getInputStream());
@@ -52,9 +49,8 @@ public class Client {
                     System.out.println(
                             "Sending the File to the Server");
 
-                    logica.create(path);
+                    logica.create(fromUser);
 
-                    dataInputStream.close();
                     dataInputStream.close();
 
                 }
@@ -63,6 +59,10 @@ public class Client {
                 }
 
 
+            }
+            if (fromUser != null) {
+                //console.writeLine("Client: " + fromUser);
+                socket.writeLine(fromUser);
             }
 
 

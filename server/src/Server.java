@@ -46,28 +46,21 @@ class Handler extends Thread {
             outputLine = protocol.processInput(inputLine);
             socket.writeLine(outputLine);
 
-            if (outputLine.equals("create file")) {
+            try {
 
-                try {
-                    dataInputStream = new DataInputStream(
-                            socket.getInputStream());
-                    dataOutputStream = new DataOutputStream(
-                            socket.getOutputStream());
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    // Here we call receiveFile define new for that
-                    // file
-                    logica.receiveFile("NewFile1.pdf");
+                logica.receiveFile("NewFile1.pdf");
 
-                    dataInputStream.close();
-                    dataInputStream.close();
-                    socket.close();
-
-                }
-                catch(Exception e) {
-                    //  Block of code to handle errors
-                }
-
+                dataInputStream.close();
+                dataOutputStream.close();
+                socket.close();
             }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
             if (outputLine.equals("Bye.")) {
                 break;

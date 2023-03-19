@@ -37,11 +37,10 @@ public class Protocol {
                 break;
 
             case CREATE:
-                theOutput = "Geef een filepath op";
 
                 if(theInput != null){
 
-                    theOutput = "create file";
+                    theOutput = "server is ready for file";
                 }
 
                 break;
