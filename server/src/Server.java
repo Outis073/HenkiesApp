@@ -9,6 +9,11 @@ import java.io.IOException;
 public class Server {
     public static void main(String[] args) throws IOException {
 
+        DataOutputStream dataOutputStream = null;
+         DataInputStream dataInputStream = null;
+
+        FileMethods logica = new FileMethods();
+
         int port = 4444;
         KServerSocket serverSocket = new KServerSocket(port);
         KConsole console = new KConsole();
@@ -16,6 +21,20 @@ public class Server {
             KSocket socket = serverSocket.accept();
             var handler = new Handler(console, socket);
             handler.start();
+
+            try {
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
+                logica.receiveFile("NewFile1.pdf");
+
+                dataInputStream.close();
+                dataOutputStream.close();
+                socket.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
@@ -25,10 +44,6 @@ class Handler extends Thread {
     private KConsole console;
     private KSocket socket;
 
-    private static DataOutputStream dataOutputStream = null;
-    private static DataInputStream dataInputStream = null;
-
-    FileMethods logica = new FileMethods();
 
     Handler(KConsole console, KSocket socket) {
         this.console = console;
@@ -45,22 +60,6 @@ class Handler extends Thread {
             console.writeLine("Client: " + inputLine);
             outputLine = protocol.processInput(inputLine);
             socket.writeLine(outputLine);
-
-            try {
-
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-                logica.receiveFile("NewFile1.pdf");
-
-                dataInputStream.close();
-                dataOutputStream.close();
-                socket.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
 
             if (outputLine.equals("Bye.")) {
                 break;
