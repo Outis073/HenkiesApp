@@ -24,20 +24,12 @@ public class Protocol {
             case ACTION:
                 if (theInput.equalsIgnoreCase("create")) {
                     theOutput = "geef een filepath op";
-                    state = CREATE;
+                    state = WAITING;
                 } else {
                     theOutput = "Geen geldige optie, kies opnieuw";
                 }
                 break;
 
-            case CREATE:
-
-                if(theInput != null){
-
-                    theOutput = "server is ready for file";
-                }
-
-                break;
 
             default:
                 break;

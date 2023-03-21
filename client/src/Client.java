@@ -38,23 +38,16 @@ public class Client {
 
             if(fromServer.equalsIgnoreCase("geef een filepath op"))
             {
-
                 try {
 
-                    // client/src/
-                    var test = "client/src/jdk.exe";
-                    socket.writeLine("send file from client");
+                    var name  = console.readLine();
+                    var path = "client/src/data/" + name;
+                    socket.writeLine("send file from client - " + name);
 
-                    //dataInputStream = new DataInputStream(
-                    //        socket.getInputStream());
-                    //dataOutputStream = new DataOutputStream(
-                    //        socket.getOutputStream());
                     System.out.println(
-                            "Sending the File to the Server");
+                            "Sending the File  from client to the Server");
 
-                     logica.create(test, socket.getSocket());
-
-
+                     logica.create(path, socket.getSocket());
 
                 }
                 catch(Exception e) {

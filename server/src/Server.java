@@ -49,24 +49,21 @@ class Handler extends Thread {
 
         socket.writeLine(outputLine);
 
-
-
         while ((inputLine = socket.readLine()) != null) {
             console.writeLine("Client: " + inputLine);
             outputLine = protocol.processInput(inputLine);
             socket.writeLine(outputLine);
 
-            if(outputLine.equals("server is ready for file"))
+            if(inputLine.contains("send file from client"))
             {
                 try{
-                    //dataInputStream = new DataInputStream(socket.getInputStream());
-                    //dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    logica.receiveFile("test3.exe", socket.getSocket());
+                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
 
-                     //socket.getSocket().getInputStream().close();
-                     //socket.getSocket().getOutputStream().close();
-                     //socket.getSocket().close();
+                    String path = "server/src/data/"+name;
+
+                    logica.receiveFile(path, socket.getSocket());
+
                 }
                 catch (Exception e) {
                     e.printStackTrace();

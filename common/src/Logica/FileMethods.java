@@ -6,19 +6,19 @@ import java.net.Socket;
 
 public class FileMethods implements FileLogica{
 
-
-
     @Override
     public  void create(String path, Socket socket)  throws Exception{
 
         try {
-            int bytes = 0;
             var dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-            File file = new File(path);
-            FileInputStream fileInputStream = null;
-            fileInputStream = new FileInputStream(file);
+            var name = path.substring(path.lastIndexOf('/') + 1);
+            String savePath = "server" + "/" + "src" + "/" + "data" +  "/" + name;
+            int bytes = 0;
 
+            FileInputStream fileInputStream = null;
+            File file = new File(path);
+            fileInputStream = new FileInputStream(path);
 
             // send file size
             dataOutputStream.writeLong(file.length());
@@ -38,9 +38,9 @@ public class FileMethods implements FileLogica{
     @Override
     public void receiveFile(String fileName, Socket socket) throws Exception{
         var dataInputStream = new DataInputStream(socket.getInputStream());
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
         int bytes = 0;
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
         long size = dataInputStream.readLong();     // read file size
         byte[] buffer = new byte[4*1024];
@@ -50,4 +50,20 @@ public class FileMethods implements FileLogica{
         }
         fileOutputStream.close();
     }
+
+    @Override()
+    public boolean checkServerForFile(String Filename)
+    {
+        File folder = new File("server/src/data");
+        File[] listOfFiles = folder.listFiles();
+
+        assert listOfFiles != null;
+        for (File file : listOfFiles) {
+            if (file.getName().equalsIgnoreCase(Filename)) {
+                System.out.println(file.getName());
+                return true;
+            }
+        }
+        return false;
+    };
 }
