@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class KServerSocket extends Socket {
+public class KServerSocket  {
     private int port;
     private ServerSocket socket;
 

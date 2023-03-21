@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 
-public class KSocket extends Socket {
+public class KSocket {
     private String host;
     private Socket socket;
     private BufferedReader in;
@@ -46,4 +46,7 @@ public class KSocket extends Socket {
         out.println(msg);
     }
 
+    public Socket getSocket() {
+        return this.socket;
+    }
 }

@@ -1,11 +1,16 @@
 import Logica.FileMethods;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Scanner;
 
 public class Client {
+
+    private static DataOutputStream dataOutputStream = null;
+    private static DataInputStream dataInputStream = null;
+
 
     public static void main(String[] args) {
         var client = new Client();
@@ -23,8 +28,6 @@ public class Client {
 
         FileMethods logica = new FileMethods();
 
-        DataOutputStream dataOutputStream = null;
-        DataInputStream dataInputStream = null;
 
         while ((fromServer = socket.readLine()) != null) {
 
@@ -33,33 +36,34 @@ public class Client {
             if (fromServer.equals("Bye."))
                 break;
 
-                fromUser = console.readLine();
-
-
             if(fromServer.equalsIgnoreCase("geef een filepath op"))
             {
 
                 try {
-                    fromUser = console.readLine();
 
-                    dataInputStream = new DataInputStream(
-                            socket.getInputStream());
-                    dataOutputStream = new DataOutputStream(
-                            socket.getOutputStream());
+                    // client/src/
+                    var test = "client/src/test.pdf";
+                    socket.writeLine("send file from client");
+
+                    //dataInputStream = new DataInputStream(
+                    //        socket.getInputStream());
+                    //dataOutputStream = new DataOutputStream(
+                    //        socket.getOutputStream());
                     System.out.println(
                             "Sending the File to the Server");
 
-                    logica.create(fromUser);
+                    // logica.create(test, socket.getSocket());
 
-                    dataInputStream.close();
+                    // socket.getSocket().getInputStream().close();
 
                 }
                 catch(Exception e) {
-                    //  Block of code to handle errors
+                    e.printStackTrace();
                 }
 
 
             }
+            fromUser = console.readLine();
             if (fromUser != null) {
                 //console.writeLine("Client: " + fromUser);
                 socket.writeLine(fromUser);

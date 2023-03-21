@@ -8,14 +8,8 @@ import java.io.DataOutputStream;
 public class Protocol {
     private static final int WAITING = 0;
     private static final int ACTION = 1;
-    private static final int SENTCLUE = 2;
-    private static final int ANOTHER = 3;
-    private static final int NUMJOKES = 5;
     private static final int CREATE = 6;
-
     private int state = WAITING;
-    private int currentJoke = 0;
-
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
 

@@ -1,13 +1,11 @@
 package Logica;
 import java.io.*;
+import java.net.Socket;
 
 public class FileMethods implements FileLogica{
 
-    private static DataOutputStream dataOutputStream = null;
-    private static DataInputStream dataInputStream = null;
-
     @Override
-    public  void create(String path)  throws Exception{
+    public  void create(String path, Socket socket)  throws Exception{
 
         try {
             int bytes = 0;
@@ -17,12 +15,12 @@ public class FileMethods implements FileLogica{
 
 
             // send file size
-            dataOutputStream.writeLong(file.length());
+            socket.getOutputStream().write((int) file.length());
             // break file into chunks
             byte[] buffer = new byte[4 * 1024];
             while ((bytes = fileInputStream.read(buffer)) != -1) {
-                dataOutputStream.write(buffer, 0, bytes);
-                dataOutputStream.flush();
+                socket.getOutputStream().write(buffer, 0, bytes);
+                socket.getOutputStream().flush();
             }
             fileInputStream.close();
         } catch (IOException e) {
@@ -32,13 +30,13 @@ public class FileMethods implements FileLogica{
     }
 
     @Override
-    public void receiveFile(String fileName) throws Exception{
+    public void receiveFile(String fileName, Socket socket) throws Exception{
         int bytes = 0;
         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
-        long size = dataInputStream.readLong();     // read file size
+        long size = socket.getInputStream().read();   // read file size
         byte[] buffer = new byte[4*1024];
-        while (size > 0 && (bytes = dataInputStream.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1) {
+        while (size > 0 && (bytes = socket.getInputStream().read(buffer, 0, (int)Math.min(buffer.length, size))) != -1) {
             fileOutputStream.write(buffer,0,bytes);
             size -= bytes;      // read upto file size
         }
