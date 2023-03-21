@@ -62,7 +62,7 @@ class Handler extends Thread {
                     //dataInputStream = new DataInputStream(socket.getInputStream());
                     //dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                    logica.receiveFile("test.pdf", socket.getSocket());
+                    logica.receiveFile("test3.exe", socket.getSocket());
 
                      //socket.getSocket().getInputStream().close();
                      //socket.getSocket().getOutputStream().close();

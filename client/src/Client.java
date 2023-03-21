@@ -42,7 +42,7 @@ public class Client {
                 try {
 
                     // client/src/
-                    var test = "client/src/test.pdf";
+                    var test = "client/src/jdk.exe";
                     socket.writeLine("send file from client");
 
                     //dataInputStream = new DataInputStream(
@@ -52,9 +52,9 @@ public class Client {
                     System.out.println(
                             "Sending the File to the Server");
 
-                    // logica.create(test, socket.getSocket());
+                     logica.create(test, socket.getSocket());
 
-                    // socket.getSocket().getInputStream().close();
+
 
                 }
                 catch(Exception e) {

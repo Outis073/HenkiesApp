@@ -12,11 +12,9 @@ public class FileMethods implements FileLogica{
     public  void create(String path, Socket socket)  throws Exception{
 
         try {
-
+            int bytes = 0;
             var dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-
-            int bytes = 0;
             File file = new File(path);
             FileInputStream fileInputStream = null;
             fileInputStream = new FileInputStream(file);
