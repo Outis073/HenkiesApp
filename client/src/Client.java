@@ -40,23 +40,41 @@ public class Client {
             {
                 try {
 
+
+
                     var name  = console.readLine();
-                    var path = "client/src/data/" + name;
-                    socket.writeLine("send file from client - " + name);
 
-                    System.out.println(
-                            "Sending the File  from client to the Server");
+//                    var x  = logica.checkServerForFile(name);
+//
+//                    if(x)
+//                    {
+                        var path = "client/src/data/" + name;
+                        socket.writeLine("send file from client - " + name);
 
-                     logica.create(path, socket.getSocket());
+                        System.out.println(
+                                "Sending the File  from client to the Server");
+
+                        logica.create(path, socket.getSocket());
+
+//                    } else
+//                    {
+//
+//                        System.out.println(
+//                                "bestand bestaat al");
+//                        socket.writeLine("reset");
+//                        //fromServer;
+//                    }
 
                 }
                 catch(Exception e) {
                     e.printStackTrace();
                 }
 
-
             }
+
+
             fromUser = console.readLine();
+
             if (fromUser != null) {
                 //console.writeLine("Client: " + fromUser);
                 socket.writeLine(fromUser);

@@ -11,9 +11,6 @@ public class FileMethods implements FileLogica{
 
         try {
             var dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
-            var name = path.substring(path.lastIndexOf('/') + 1);
-            String savePath = "server" + "/" + "src" + "/" + "data" +  "/" + name;
             int bytes = 0;
 
             FileInputStream fileInputStream = null;
@@ -52,18 +49,8 @@ public class FileMethods implements FileLogica{
     }
 
     @Override()
-    public boolean checkServerForFile(String Filename)
+    public boolean checkServerForFile(String fileName)
     {
-        File folder = new File("server/src/data");
-        File[] listOfFiles = folder.listFiles();
-
-        assert listOfFiles != null;
-        for (File file : listOfFiles) {
-            if (file.getName().equalsIgnoreCase(Filename)) {
-                System.out.println(file.getName());
-                return true;
-            }
-        }
-        return false;
+        return new File("server/src/data/"+ fileName).exists();
     };
 }
