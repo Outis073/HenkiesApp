@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.sql.Timestamp;
 import java.util.Scanner;
 
 public class Client {
@@ -20,6 +21,7 @@ public class Client {
     private void run() {
         String host = "localhost";
         int port = 4444;
+        Timestamp timestamp = null;
         KSocket socket = new KSocket(host, port);
         KConsole console = new KConsole();
 
@@ -54,7 +56,7 @@ public class Client {
                         System.out.println(
                                 "Sending the File  from client to the Server");
 
-                        logica.create(path, socket.getSocket());
+                        logica.create(path, timestamp,socket.getSocket());
 
 //                    } else
 //                    {

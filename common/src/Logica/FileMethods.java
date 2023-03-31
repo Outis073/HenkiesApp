@@ -1,13 +1,14 @@
 package Logica;
 import java.io.*;
 import java.net.Socket;
-
+import java.sql.Time;
+import java.sql.Timestamp;
 
 
 public class FileMethods implements FileLogica{
 
     @Override
-    public  void create(String path, Socket socket)  throws Exception{
+    public  void create(String path, Timestamp timestamp, Socket socket)  throws Exception{
 
         try {
             var dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -46,6 +47,21 @@ public class FileMethods implements FileLogica{
             size -= bytes;      // read upto file size
         }
         fileOutputStream.close();
+    }
+
+    @Override
+    public void updateFile(String path, String fileName, Timestamp timestamp, Socket socket) throws Exception {
+        var dataInputStream = new DataInputStream(socket.getInputStream());
+        int bytes = 0;
+
+
+        // send file size
+        dataOutputStream.writeLong(file.length());
+        // break file into chunks
+        byte[] buffer = new byte[4 * 1024];
+        while ((bytes = fileInputStream.read(buffer)) != -1) {
+            dataOutputStream.write(buffer,0,bytes);
+            dataOutputStream.flush();
     }
 
     @Override()
