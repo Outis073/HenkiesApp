@@ -4,6 +4,7 @@ import jdk.net.ExtendedSocketOptions;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import java.io.File;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Scanner;
@@ -39,7 +40,10 @@ public class Client {
             if (fromServer.equals("Bye."))
                 break;
 
-
+            if(fromServer.equals("dummy"))
+            {
+                System.out.println("test geslaagd");
+            }
             //create method
             if(fromServer.equalsIgnoreCase("geef een filepath op voor create"))
             {
@@ -71,19 +75,21 @@ public class Client {
                 }
 
             }
-            if(fromServer.equalsIgnoreCase("geef een filepath op voor het updaten"))
+            if(fromServer.equalsIgnoreCase("synchroniseren van bestanden"))
             {
                 try {
-                    var name  = console.readLine();
+                    File folder = new File("client/src/data");
+                    File[] listOfFiles = folder.listFiles();
 
-                    socket.writeLine("0x08 - " + name);
+                    for (int i = 0; i < listOfFiles.length; i++) {
+                        if (listOfFiles[i].isFile()) {
+                            socket.writeLine("0x02-" + listOfFiles[i].getName()+"-"+listOfFiles[i].lastModified());
+                        } else if (listOfFiles[i].isDirectory()) {
+                            System.err.println("oei oei ongeldige directory");
+                        }
+                    }
 
-                    socket.writeLine("0x06 - " + name);
-                    System.out.println(
-                            "Sending the File  from client to the Server");
-
-                    logica.create(clientPath + name, socket.getSocket());
-
+                    socket.writeLine("0x02-EndofArrayFromClient-3827888");
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -91,8 +97,27 @@ public class Client {
 
             }
 
+            if(fromServer.contains("0x06"))
+            {
+                try{
+                    String name = fromServer.substring(fromServer.lastIndexOf('-') + 1);
+                    String path = clientPath+name;
+                    logica.receiveFile(path, socket.getSocket());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-            fromUser = console.readLine();
+
+            if(!fromServer.contains("0x06" ) || !fromServer.contains("0x02"))
+            {
+                fromUser = console.readLine();
+            } else
+            {
+                fromUser = "server is syncing";
+            }
+
 
             if (fromUser != null) {
                 //console.writeLine("Client: " + fromUser);

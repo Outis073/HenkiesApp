@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 public class Protocol {
     private static final int WAITING = 0;
     private static final int ACTION = 1;
-    private static final int CREATE = 6;
+    private static final int SYNC = 2;
     private int state = WAITING;
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
@@ -34,11 +34,19 @@ public class Protocol {
                     theOutput = "geef een filepath op voor het updaten";
                     state = WAITING;
                 }
+                else if (theInput.equalsIgnoreCase("sync")) {
+                    theOutput = "synchroniseren van bestanden";
+                    state = WAITING;
+                }
+                else if (theInput.equalsIgnoreCase("server is syncing")) {
+                    theOutput = "synchroniseren van bestanden";
+                    //state = WAITING;
+                }
+
                 else {
                     theOutput = "Geen geldige optie, kies opnieuw";
                 }
                 break;
-
 
             default:
                 break;
