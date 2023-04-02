@@ -1,4 +1,6 @@
 import Logica.FileMethods;
+import jdk.net.ExtendedSocketOptions;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -10,6 +12,7 @@ public class Client {
 
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
+    private String clientPath = "client/src/data/";
 
 
     public static void main(String[] args) {
@@ -36,34 +39,50 @@ public class Client {
             if (fromServer.equals("Bye."))
                 break;
 
-            if(fromServer.equalsIgnoreCase("geef een filepath op"))
+
+            //create method
+            if(fromServer.equalsIgnoreCase("geef een filepath op voor create"))
             {
                 try {
 
-
-
                     var name  = console.readLine();
 
-//                    var x  = logica.checkServerForFile(name);
-//
-//                    if(x)
-//                    {
-                        var path = "client/src/data/" + name;
-                        socket.writeLine("send file from client - " + name);
+                    socket.writeLine("0x06 -" + name);
+                    System.out.println(
+                            "Sending the File  from client to the Server");
 
-                        System.out.println(
-                                "Sending the File  from client to the Server");
+                    logica.create(clientPath + name, socket.getSocket());
 
-                        logica.create(path, socket.getSocket());
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
 
-//                    } else
-//                    {
-//
-//                        System.out.println(
-//                                "bestand bestaat al");
-//                        socket.writeLine("reset");
-//                        //fromServer;
-//                    }
+            }
+            if(fromServer.equalsIgnoreCase("geef een filepath op voor het verwijderen"))
+            {
+                try {
+                    var name  = console.readLine();
+
+                    socket.writeLine("0x08 - " + name);
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if(fromServer.equalsIgnoreCase("geef een filepath op voor het updaten"))
+            {
+                try {
+                    var name  = console.readLine();
+
+                    socket.writeLine("0x08 - " + name);
+
+                    socket.writeLine("0x06 - " + name);
+                    System.out.println(
+                            "Sending the File  from client to the Server");
+
+                    logica.create(clientPath + name, socket.getSocket());
 
                 }
                 catch(Exception e) {

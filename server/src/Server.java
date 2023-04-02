@@ -5,6 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
 public class Server {
     public static void main(String[] args) throws IOException {
@@ -32,6 +36,8 @@ class Handler extends Thread {
 
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
+    private String serverPath = "server/src/data/";
+
 
     FileMethods logica = new FileMethods();
 
@@ -54,15 +60,24 @@ class Handler extends Thread {
             outputLine = protocol.processInput(inputLine);
             socket.writeLine(outputLine);
 
-            if(inputLine.contains("send file from client"))
+            if(inputLine.contains("0x06"))
             {
                 try{
-
                     String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
-
-                    String path = "server/src/data/"+name;
-
+                    String path = serverPath+name;
                     logica.receiveFile(path, socket.getSocket());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(inputLine.contains("0x08"))
+            {
+                try{
+                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                    String path = serverPath+name;
+
+                    logica.deleteFile(path);
 
                 }
                 catch (Exception e) {

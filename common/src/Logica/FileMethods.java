@@ -1,7 +1,7 @@
 package Logica;
 import java.io.*;
 import java.net.Socket;
-
+import java.security.MessageDigest;
 
 
 public class FileMethods implements FileLogica{
@@ -34,6 +34,15 @@ public class FileMethods implements FileLogica{
 
     @Override
     public void receiveFile(String fileName, Socket socket) throws Exception{
+
+
+        File file = new File(fileName);
+        if(file.exists())
+        {
+            var toDelete = file.delete();
+            System.out.println("bestaande file is verwijderd"+ toDelete);
+        }
+
         var dataInputStream = new DataInputStream(socket.getInputStream());
         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
@@ -48,9 +57,16 @@ public class FileMethods implements FileLogica{
         fileOutputStream.close();
     }
 
-    @Override()
-    public boolean checkServerForFile(String fileName)
+    @Override
+    public void deleteFile(String filename)
     {
-        return new File("server/src/data/"+ fileName).exists();
-    };
+        File file = new File(filename);
+
+        if (file.delete()) {
+            System.out.println("File deleted successfully");
+        }
+        else {
+            System.out.println("Failed to delete the file");
+        }
+    }
 }

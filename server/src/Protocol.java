@@ -18,14 +18,23 @@ public class Protocol {
 
         switch (state) {
             case WAITING:
-                theOutput = "zeg create";
+                theOutput = "kies een van de volgende opties: create , delete, update, sync";
                 state = ACTION;
                 break;
             case ACTION:
                 if (theInput.equalsIgnoreCase("create")) {
-                    theOutput = "geef een filepath op";
+                    theOutput = "geef een filepath op voor create";
                     state = WAITING;
-                } else {
+                }
+                 else if (theInput.equalsIgnoreCase("delete")) {
+                    theOutput = "geef een filepath op voor het verwijderen";
+                    state = WAITING;
+                }
+                else if (theInput.equalsIgnoreCase("update")) {
+                    theOutput = "geef een filepath op voor het updaten";
+                    state = WAITING;
+                }
+                else {
                     theOutput = "Geen geldige optie, kies opnieuw";
                 }
                 break;
