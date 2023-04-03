@@ -62,89 +62,96 @@ class Handler extends Thread {
 
         while ((inputLine = socket.readLine()) != null) {
             console.writeLine("Client: " + inputLine);
-            outputLine = protocol.processInput(inputLine);
-            socket.writeLine(outputLine);
 
-            socket.writeLine("dummy");
+            if (!inputLine.contains("0x"))
+            {
+                outputLine = protocol.processInput(inputLine);
+                socket.writeLine(outputLine);
+            }
 
-//            if(inputLine.contains("0x06"))
-//            {
-//                try{
-//                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
-//                    String path = serverPath+name;
-//                    logica.receiveFile(path, socket.getSocket());
-//                }
-//                catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if(inputLine.contains("0x08"))
-//            {
-//                try{
-//                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
-//                    String path = serverPath+name;
-//
-//                    logica.deleteFile(path);
-//
-//                }
-//                catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if(inputLine.contains("0x02"))
-//            {
-//                try{
-//                    String fileName = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
-//                    var clientModDate = inputLine.substring(inputLine.lastIndexOf('-') + 1);
-//
-//                    boolean check = new File(serverPath+ fileName).exists();
-//
-//                    if(check)
-//                    {
-//                        var checkDate = new File(serverPath+fileName).lastModified();
-//                        if (checkDate < Long.parseLong(clientModDate))
-//                        {
-//                            filesNotToSync.add(fileName);
-//                        }
-//                    }
-//
-//                    if(fileName.equals("EndofArrayFromClient"))
-//                    {
-//                        List<String> filesFromServer= new ArrayList<>();
-//                        File folder = new File("server/src/data");
-//
-//                        File[] listOfFiles = folder.listFiles();
-//
-//                        for (int i = 0; i < listOfFiles.length; i++) {
-//                            if (listOfFiles[i].isFile()) {
-//                                filesFromServer.add(listOfFiles[i].getName());
-//                            } else if (listOfFiles[i].isDirectory()) {
-//                                System.err.println("oei oei ongeldige directory");
-//                            }
-//                        }
-//                        filesFromServer.removeAll(new HashSet(filesNotToSync));
-//
-//
-//                        for (String element: filesFromServer)
-//                        {
-//                            socket.writeLine("0x06 -" + element);
-//                            logica.create(serverPath + element, socket.getSocket());
-//                        }
-//                        filesFromServer.clear();
-//                        filesNotToSync.clear();
-//
-//                    }
-//
-//                }
-//                catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//
-//            if (outputLine.equals("Bye.")) {
-//                break;
-//            }
+
+
+            if(inputLine.contains("0x06"))
+            {
+                try{
+                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                    String path = serverPath+name;
+                    logica.receiveFile(path, socket.getSocket());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(inputLine.contains("0x08"))
+            {
+                try{
+                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                    String path = serverPath+name;
+
+                    logica.deleteFile(path);
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(inputLine.contains("0x02"))
+            {
+                try{
+                    String fileName = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
+                    var clientModDate = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+
+                    boolean check = new File(serverPath+ fileName).exists();
+
+                    if(check)
+                    {
+                        var checkDate = new File(serverPath+fileName).lastModified();
+                        if (checkDate < Long.parseLong(clientModDate))
+                        {
+                            filesNotToSync.add(fileName);
+                        }
+                    }
+
+                    if(fileName.equals("EndofArrayFromClient"))
+                    {
+                        List<String> filesFromServer= new ArrayList<>();
+                        File folder = new File("server/src/data");
+
+                        File[] listOfFiles = folder.listFiles();
+
+                        for (int i = 0; i < listOfFiles.length; i++) {
+                            if (listOfFiles[i].isFile()) {
+                                filesFromServer.add(listOfFiles[i].getName());
+                            } else if (listOfFiles[i].isDirectory()) {
+                                System.err.println("oei oei ongeldige directory");
+                            }
+                        }
+                        filesFromServer.removeAll(new HashSet(filesNotToSync));
+
+                        for (String element: filesFromServer)
+                        {
+                            console.writeLine("0x06 -" + element);
+                            socket.writeLine("0x06 -" + element);
+
+                            logica.create(serverPath + element, socket.getSocket());
+                            Thread.sleep(200);
+                        }
+                        filesFromServer.clear();
+                        filesNotToSync.clear();
+
+                        socket.writeLine("einde synchen");
+
+                    }
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (outputLine.equals("Bye.")) {
+                break;
+            }
         }
     }
 }

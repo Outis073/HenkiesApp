@@ -35,7 +35,7 @@ public class FileMethods implements FileLogica{
     @Override
     public void receiveFile(String fileName, Socket socket) throws Exception{
 
-
+        int bytes = 0;
         File file = new File(fileName);
         if(file.exists())
         {
@@ -45,8 +45,6 @@ public class FileMethods implements FileLogica{
 
         var dataInputStream = new DataInputStream(socket.getInputStream());
         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-
-        int bytes = 0;
 
         long size = dataInputStream.readLong();     // read file size
         byte[] buffer = new byte[4*1024];

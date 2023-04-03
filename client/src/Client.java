@@ -32,6 +32,8 @@ public class Client {
 
         FileMethods logica = new FileMethods();
 
+        fromUser = null;
+
 
         while ((fromServer = socket.readLine()) != null) {
 
@@ -40,10 +42,6 @@ public class Client {
             if (fromServer.equals("Bye."))
                 break;
 
-            if(fromServer.equals("dummy"))
-            {
-                System.out.println("test geslaagd");
-            }
             //create method
             if(fromServer.equalsIgnoreCase("geef een filepath op voor create"))
             {
@@ -90,6 +88,7 @@ public class Client {
                     }
 
                     socket.writeLine("0x02-EndofArrayFromClient-3827888");
+
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -102,29 +101,28 @@ public class Client {
                 try{
                     String name = fromServer.substring(fromServer.lastIndexOf('-') + 1);
                     String path = clientPath+name;
+
+                    console.writeLine(clientPath+name);
                     logica.receiveFile(path, socket.getSocket());
+
+                    console.writeLine("server is synching"+ fromServer);
+
+                    fromUser = "server is syncing";
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-
-            if(!fromServer.contains("0x06" ) || !fromServer.contains("0x02"))
+            if(fromServer.contains("einde synchen"))
             {
-                fromUser = console.readLine();
-            } else
-            {
-                fromUser = "server is syncing";
+
+                fromUser = null;
             }
 
-
-            if (fromUser != null) {
-                //console.writeLine("Client: " + fromUser);
-                socket.writeLine(fromUser);
+            if (fromUser == null) {
+                 fromUser = console.readLine();
+                 socket.writeLine(fromUser);
             }
-
-
         }
     }
 }

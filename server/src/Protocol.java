@@ -16,6 +16,7 @@ public class Protocol {
     public String processInput(String theInput) {
         String theOutput = null;
 
+
         switch (state) {
             case WAITING:
                 theOutput = "kies een van de volgende opties: create , delete, update, sync";
@@ -30,23 +31,15 @@ public class Protocol {
                     theOutput = "geef een filepath op voor het verwijderen";
                     state = WAITING;
                 }
-                else if (theInput.equalsIgnoreCase("update")) {
-                    theOutput = "geef een filepath op voor het updaten";
-                    state = WAITING;
-                }
                 else if (theInput.equalsIgnoreCase("sync")) {
                     theOutput = "synchroniseren van bestanden";
                     state = WAITING;
-                }
-                else if (theInput.equalsIgnoreCase("server is syncing")) {
-                    theOutput = "synchroniseren van bestanden";
-                    //state = WAITING;
-                }
+                    break;
 
+                }
                 else {
                     theOutput = "Geen geldige optie, kies opnieuw";
                 }
-                break;
 
             default:
                 break;
