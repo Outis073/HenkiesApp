@@ -19,17 +19,19 @@ public class Protocol {
 
         switch (state) {
             case WAITING:
-                theOutput = "kies een van de volgende opties: create , delete, update, sync";
+                theOutput = "kies een van de volgende opties: create , delete, sync";
                 state = ACTION;
                 break;
             case ACTION:
                 if (theInput.equalsIgnoreCase("create")) {
                     theOutput = "geef een filepath op voor create";
                     state = WAITING;
+                    break;
                 }
                  else if (theInput.equalsIgnoreCase("delete")) {
                     theOutput = "geef een filepath op voor het verwijderen";
                     state = WAITING;
+                    break;
                 }
                 else if (theInput.equalsIgnoreCase("sync")) {
                     theOutput = "synchroniseren van bestanden";

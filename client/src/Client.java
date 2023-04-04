@@ -55,6 +55,9 @@ public class Client {
 
                     logica.create(clientPath + name, socket.getSocket());
 
+                    console.writeLine("geef server commando");
+                    socket.writeLine("reset");
+                    fromUser = null;
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -67,6 +70,10 @@ public class Client {
                     var name  = console.readLine();
 
                     socket.writeLine("0x08 - " + name);
+
+                    console.writeLine("geef server commando");
+                    socket.writeLine("reset");
+                    fromUser = null;
                 }
                 catch(Exception e) {
                     e.printStackTrace();
@@ -115,6 +122,8 @@ public class Client {
             }
             if(fromServer.contains("einde synchen"))
             {
+                console.writeLine("geef server commando");
+                socket.writeLine("reset");
 
                 fromUser = null;
             }

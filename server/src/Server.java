@@ -65,11 +65,16 @@ class Handler extends Thread {
 
             if (!inputLine.contains("0x"))
             {
-                outputLine = protocol.processInput(inputLine);
+                if(inputLine.contains("reset"))
+                {
+                    outputLine = protocol.processInput(null);
+                }else
+                {
+                    outputLine = protocol.processInput(inputLine);
+                }
                 socket.writeLine(outputLine);
+
             }
-
-
 
             if(inputLine.contains("0x06"))
             {
