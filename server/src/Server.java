@@ -64,8 +64,8 @@ class Handler extends Thread {
 
             if(inputLine.contains("serverDir"))
             {
-
                 String serverDir = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                console.writeLine(serverDir);
 
                 serverPath = serverDir;
             }

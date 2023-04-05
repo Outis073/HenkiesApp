@@ -17,7 +17,6 @@ public class Protocol {
     public String processInput(String theInput) {
         String theOutput = null;
 
-
         switch (state) {
             case INIT:
                 theOutput = "kies een client folder";
@@ -34,7 +33,7 @@ public class Protocol {
                     break;
                 }
                  else if (theInput.equalsIgnoreCase("delete")) {
-                    theOutput = "geef een filepath op voor het verwijderen";
+                    theOutput = "geef een filepath op voor het verwijderen op de server";
                     state = WAITING;
                     break;
                 }
