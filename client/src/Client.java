@@ -13,7 +13,7 @@ public class Client {
 
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
-    private String clientPath = "client/src/data/";
+    private String clientPath = null;
 
 
     public static void main(String[] args) {
@@ -39,8 +39,20 @@ public class Client {
 
             console.writeLine("Server: " + fromServer);
 
-            if (fromServer.equals("Bye."))
-                break;
+            if(fromServer.equalsIgnoreCase("kies een client folder"))
+            {
+                var clientpathinput =  console.readLine();
+                clientPath = clientpathinput;
+
+                console.writeLine("je clientdir is :"+ clientpathinput);
+                console.writeLine("kies een server folder");
+
+                var serverPath = console.readLine();
+
+                socket.writeLine("serverDir-"+ serverPath);
+
+                console.writeLine("kies een van de volgende opties: create , delete, sync");
+            }
 
             //create method
             if(fromServer.equalsIgnoreCase("geef een filepath op voor create"))
@@ -49,7 +61,7 @@ public class Client {
 
                     var name  = console.readLine();
 
-                    var path = clientPath + name;
+                    var path = clientPath + "\\"+ name;
                     File file = new File(path);
                     var clientDate =  file.lastModified();
 
@@ -57,7 +69,7 @@ public class Client {
                     System.out.println(
                             "Sending the File  from client to the Server");
 
-                    logica.create(clientPath + name, socket.getSocket());
+                    logica.create(clientPath  + "\\"+ name, socket.getSocket());
 
 
                     console.writeLine("geef server commando");
@@ -74,7 +86,7 @@ public class Client {
                 try {
                     var name  = console.readLine();
 
-                    var path = clientPath + name;
+                    var path = clientPath + "\\" + name;
                     File file = new File(path);
                     var clientDate =  file.lastModified();
 
@@ -92,7 +104,7 @@ public class Client {
             if(fromServer.equalsIgnoreCase("synchroniseren van bestanden"))
             {
                 try {
-                    File folder = new File("client/src/data");
+                    File folder = new File(clientPath);
                     File[] listOfFiles = folder.listFiles();
 
                     for (int i = 0; i < listOfFiles.length; i++) {
@@ -116,9 +128,9 @@ public class Client {
             {
                 try{
                     String name = fromServer.substring(fromServer.lastIndexOf('-') + 1);
-                    String path = clientPath+name;
+                    String path = clientPath + "\\"+name;
 
-                    console.writeLine(clientPath+name);
+                    console.writeLine(clientPath + "\\"+name);
                     logica.receiveFile(path, socket.getSocket());
 
                     console.writeLine("server is synching"+ fromServer);

@@ -24,7 +24,7 @@ public class Server {
 
         while (true) {
 
-            System.out.println("listening to port:5000");
+            System.out.println("listening to port:" + port);
             KSocket socket = serverSocket.accept();
             System.out.println(socket+" connected.");
 
@@ -41,8 +41,7 @@ class Handler extends Thread {
 
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
-    private String serverPath = "server/src/data/";
-    private String serverDir = "server/src/data";
+    private String serverPath = null;
 
     FileMethods logica = new FileMethods();
 
@@ -63,6 +62,14 @@ class Handler extends Thread {
         while ((inputLine = socket.readLine()) != null) {
             console.writeLine("Client: " + inputLine);
 
+            if(inputLine.contains("serverDir"))
+            {
+
+                String serverDir = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+
+                serverPath = serverDir;
+            }
+
             if (!inputLine.contains("0x"))
             {
                 if(inputLine.contains("reset"))
@@ -80,7 +87,7 @@ class Handler extends Thread {
             {
                 try{
                     String name = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
-                    String path = serverPath+name;
+                    String path = serverPath  + "\\"+name;
                     logica.receiveFile(path, socket.getSocket());
                 }
                 catch (Exception e) {
@@ -92,7 +99,7 @@ class Handler extends Thread {
                 try{
                     String name = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
                     console.writeLine(name);
-                    String path = serverPath+name;
+                    String path = serverPath  + "\\"+name;
 
                     logica.deleteFile(path);
 
@@ -107,11 +114,11 @@ class Handler extends Thread {
                     String fileName = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
                     var clientModDate = inputLine.substring(inputLine.lastIndexOf('-') + 1);
 
-                    boolean check = new File(serverPath+ fileName).exists();
+                    boolean check = new File(serverPath+ "\\"+ fileName).exists();
 
                     if(check)
                     {
-                        var checkDate = new File(serverPath+fileName).lastModified();
+                        var checkDate = new File(serverPath+ "\\"+fileName).lastModified();
                         if (checkDate < Long.parseLong(clientModDate))
                         {
                             filesNotToSync.add(fileName);
@@ -121,7 +128,7 @@ class Handler extends Thread {
                     if(fileName.equals("EndofArrayFromClient"))
                     {
                         List<String> filesFromServer= new ArrayList<>();
-                        File folder = new File("server/src/data");
+                        File folder = new File("C:\\Users\\xnguyen\\Desktop\\testserver");
 
                         File[] listOfFiles = folder.listFiles();
 
@@ -139,7 +146,7 @@ class Handler extends Thread {
                             console.writeLine("0x06 -" + element);
                             socket.writeLine("0x06 -" + element);
 
-                            logica.create(serverPath + element, socket.getSocket());
+                            logica.create(serverPath + "\\" + element, socket.getSocket());
                             Thread.sleep(200);
                         }
                         filesFromServer.clear();
