@@ -1,33 +1,18 @@
 import Logica.FileMethods;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 public class Server {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         int port = 4444;
         KServerSocket serverSocket = new KServerSocket(port);
         KConsole console = new KConsole();
 
         while (true) {
-
-            System.out.println("listening to port:" + port);
             KSocket socket = serverSocket.accept();
-            System.out.println(socket+" connected.");
-
             var handler = new Handler(console, socket);
             handler.start();
         }
@@ -35,12 +20,8 @@ public class Server {
 }
 
 class Handler extends Thread {
-
     private KConsole console;
     private KSocket socket;
-
-    private static DataOutputStream dataOutputStream = null;
-    private static DataInputStream dataInputStream = null;
     private String serverPath = null;
 
     FileMethods logica = new FileMethods();
@@ -53,9 +34,7 @@ class Handler extends Thread {
     public void run() {
         String inputLine, outputLine;
         Protocol protocol = new Protocol();
-
         outputLine = protocol.processInput(null);
-
         socket.writeLine(outputLine);
         List<String> filesNotToSync = new ArrayList<>();
 
@@ -64,10 +43,7 @@ class Handler extends Thread {
 
             if(inputLine.contains("serverDir"))
             {
-
-                String serverDir = inputLine.substring(inputLine.lastIndexOf('-') + 1);
-
-                serverPath = serverDir;
+                serverPath = inputLine.substring(inputLine.lastIndexOf('-') + 1);
             }
 
             if (!inputLine.contains("0x"))
@@ -80,7 +56,6 @@ class Handler extends Thread {
                     outputLine = protocol.processInput(inputLine);
                 }
                 socket.writeLine(outputLine);
-
             }
 
             if(inputLine.contains("0x06"))
@@ -100,9 +75,7 @@ class Handler extends Thread {
                     String name = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
                     console.writeLine(name);
                     String path = serverPath  + "\\"+name;
-
                     logica.deleteFile(path);
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -125,18 +98,17 @@ class Handler extends Thread {
                         }
                     }
 
-                    if(fileName.equals("EndofArrayFromClient"))
+                    if(fileName.equals("EndOfArrayFromClient"))
                     {
                         List<String> filesFromServer= new ArrayList<>();
                         File folder = new File(serverPath+ "\\"+fileName);
-
                         File[] listOfFiles = folder.listFiles();
 
                         for (int i = 0; i < listOfFiles.length; i++) {
                             if (listOfFiles[i].isFile()) {
                                 filesFromServer.add(listOfFiles[i].getName());
                             } else if (listOfFiles[i].isDirectory()) {
-                                System.err.println("oei oei ongeldige directory");
+                                System.err.println("Verkeerde directory gekozen");
                             }
                         }
                         filesFromServer.removeAll(new HashSet(filesNotToSync));
@@ -152,16 +124,13 @@ class Handler extends Thread {
                         filesFromServer.clear();
                         filesNotToSync.clear();
 
-                        socket.writeLine("einde synchen");
-
+                        socket.writeLine("Einde synchronisatie");
                     }
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             if (outputLine.equals("Bye.")) {
                 break;
             }
