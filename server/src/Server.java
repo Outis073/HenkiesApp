@@ -128,7 +128,7 @@ class Handler extends Thread {
                     if(fileName.equals("EndofArrayFromClient"))
                     {
                         List<String> filesFromServer= new ArrayList<>();
-                        File folder = new File("C:\\Users\\xnguyen\\Desktop\\testserver");
+                        File folder = new File(serverPath);
 
                         File[] listOfFiles = folder.listFiles();
 
