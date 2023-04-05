@@ -72,7 +72,7 @@ public class Client {
                     logica.create(clientPath  + "\\"+ name, socket.getSocket());
 
 
-                    console.writeLine("geef server commando");
+                    console.writeLine("Start nieuwe actie, kies uit de opties: create, delete, sync");
                     socket.writeLine("reset");
                     fromUser = null;
                 }
@@ -92,7 +92,7 @@ public class Client {
 
                     socket.writeLine("0x08 -" + name + "-"+ clientDate);
 
-                    console.writeLine("geef server commando");
+                    console.writeLine("Start nieuwe actie, kies uit de opties: create, delete, sync");
                     socket.writeLine("reset");
                     fromUser = null;
                 }
@@ -143,7 +143,7 @@ public class Client {
             }
             if(fromServer.contains("einde synchen"))
             {
-                console.writeLine("geef server commando");
+                console.writeLine("Start nieuwe actie, kies uit de opties: create, delete, sync");
                 socket.writeLine("reset");
 
                 fromUser = null;
