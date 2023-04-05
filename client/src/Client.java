@@ -49,11 +49,16 @@ public class Client {
 
                     var name  = console.readLine();
 
-                    socket.writeLine("0x06 -" + name);
+                    var path = clientPath + name;
+                    File file = new File(path);
+                    var clientDate =  file.lastModified();
+
+                    socket.writeLine("0x06 -" + name + "-"+ clientDate);
                     System.out.println(
                             "Sending the File  from client to the Server");
 
                     logica.create(clientPath + name, socket.getSocket());
+
 
                     console.writeLine("geef server commando");
                     socket.writeLine("reset");
@@ -69,7 +74,11 @@ public class Client {
                 try {
                     var name  = console.readLine();
 
-                    socket.writeLine("0x08 - " + name);
+                    var path = clientPath + name;
+                    File file = new File(path);
+                    var clientDate =  file.lastModified();
+
+                    socket.writeLine("0x08 -" + name + "-"+ clientDate);
 
                     console.writeLine("geef server commando");
                     socket.writeLine("reset");

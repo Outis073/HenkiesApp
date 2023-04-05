@@ -79,7 +79,7 @@ class Handler extends Thread {
             if(inputLine.contains("0x06"))
             {
                 try{
-                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                    String name = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
                     String path = serverPath+name;
                     logica.receiveFile(path, socket.getSocket());
                 }
@@ -90,7 +90,8 @@ class Handler extends Thread {
             if(inputLine.contains("0x08"))
             {
                 try{
-                    String name = inputLine.substring(inputLine.lastIndexOf('-') + 1);
+                    String name = inputLine.substring(inputLine.indexOf("-")+1, inputLine.lastIndexOf("-"));
+                    console.writeLine(name);
                     String path = serverPath+name;
 
                     logica.deleteFile(path);
